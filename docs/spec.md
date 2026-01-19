@@ -57,7 +57,7 @@ graph LR
 ```
 
 ## 6. 容器/部署概觀
-- **部署方式**：將專案資料夾置於 `~/.claude/skills/` 或使用 `npx skills add` 安裝。
+- **部署方式**：將專案資料夾置於 `~/.claude/skills/` (Claude Code) 或 `~/.gemini/antigravity/skills/` (Antigravity)，或使用 `npx skills add` 安裝。
 - **檔案結構**：
     - `SKILL.md`: 核心邏輯與提示定義。
     - `README.md`: 使用說明。
