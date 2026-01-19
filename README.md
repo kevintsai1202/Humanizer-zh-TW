@@ -56,10 +56,18 @@ git clone https://github.com/kevintsai1202/Humanizer-zh-TW.git ~/.gemini/cli/ski
      - **macOS/Linux**: `~/.gemini/antigravity/skills/`
      - **Windows**: `%USERPROFILE%\.gemini\antigravity\skills\`
 
-3. 確保資料夾結構如下（以 Claude Code 為例）：
+3. 確保資料夾結構如下：
 
+   **Claude Code:**
    ```
    ~/.claude/skills/humanizer-zh-tw/
+   ├── SKILL.md       # 技能定義檔案（繁體中文版）
+   └── README.md      # 說明文件
+   ```
+
+   **Antigravity:**
+   ```
+   ~/.gemini/antigravity/skills/humanizer-zh-tw/
    ├── SKILL.md       # 技能定義檔案（繁體中文版）
    └── README.md      # 說明文件
    ```
