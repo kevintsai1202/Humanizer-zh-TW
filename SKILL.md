@@ -12,7 +12,7 @@ allowed-tools:
   - AskUserQuestion
 metadata:
   trigger: 編輯或審閱文字，去除 AI 寫作痕跡
-  source: 翻譯自 blader/humanizer，參考 hardikpandya/stop-slop
+  source: op7418/humanizer-zh 的分支，翻譯自 blader/humanizer，參考 hardikpandya/stop-slop
 ---
 
 # Humanizer-zh-TW: 去除 AI 寫作痕跡

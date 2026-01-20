@@ -77,7 +77,7 @@ git clone https://github.com/kevintsai1202/Humanizer-zh-TW.git ~/.gemini/cli/ski
 重新啟動 Claude Code / Antigravity 或重新載入 skills 後，在對話中輸入：
 
 ```
-/humanizer-zh
+/humanizer-zh-tw
 ```
 
 如果安裝成功，該技能將被啟用。
@@ -88,10 +88,10 @@ git clone https://github.com/kevintsai1202/Humanizer-zh-TW.git ~/.gemini/cli/ski
 
 在 Claude Code 或 Antigravity 中，你可以透過以下方式使用 Humanizer：
 
-#### 1. 直接呼叫技能
+#### 1. 直接呼叫技能(Claude Code)
 
 ```
-/humanizer-zh 請幫我人性化以下文字：
+/humanizer-zh-tw 請幫我人性化以下文字：
 
 [貼上你的 AI 生成文字]
 ```
@@ -107,7 +107,7 @@ git clone https://github.com/kevintsai1202/Humanizer-zh-TW.git ~/.gemini/cli/ski
 #### 3. 處理檔案內容
 
 ```
-/humanizer-zh 請人性化 article.md 檔案中的內容
+/humanizer-zh-tw 請人性化 article.md 檔案中的內容
 ```
 
 ### 使用場景範例
@@ -117,7 +117,7 @@ git clone https://github.com/kevintsai1202/Humanizer-zh-TW.git ~/.gemini/cli/ski
 **輸入：**
 
 ```
-/humanizer-zh
+/humanizer-zh-tw
 坐落在風景如畫的台北市中心，這家咖啡館擁有豐富的文化底蘊和令人讚嘆的裝飾。它作為城市咖啡文化的焦點，為顧客提供無縫、直觀和充滿活力的體驗。
 ```
 
@@ -130,7 +130,7 @@ git clone https://github.com/kevintsai1202/Humanizer-zh-TW.git ~/.gemini/cli/ski
 **輸入：**
 
 ```
-/humanizer-zh
+/humanizer-zh-tw
 本研究深入探討了機器學習在醫療診斷中的關鍵角色，突顯了其在不斷演進的醫療佈局中的重要性。此外，它為該領域的未來發展奠定了堅實的基礎。
 ```
 
@@ -143,7 +143,7 @@ git clone https://github.com/kevintsai1202/Humanizer-zh-TW.git ~/.gemini/cli/ski
 **輸入：**
 
 ```
-/humanizer-zh
+/humanizer-zh-tw
 人工智慧不僅僅是一種技術，它是我們思考未來方式的革命。業界專家認為這將對整個社會產生長遠影響。
 ```
 
@@ -268,6 +268,8 @@ git clone https://github.com/kevintsai1202/Humanizer-zh-TW.git ~/.gemini/cli/ski
 - [WikiProject AI Cleanup](https://en.wikipedia.org/wiki/Wikipedia:WikiProject_AI_Cleanup) - 維基百科 AI 清理專案
 - [blader/humanizer](https://github.com/blader/humanizer) - 原始英文版專案
 - [hardikpandya/stop-slop](https://github.com/hardikpandya/stop-slop) - 實用工具部分的靈感來源
+- [op7418/Humanizer-zh](https://github.com/op7418/Humanizer-zh) - 簡體中文版本參考
+
 
 ## 許可
 
