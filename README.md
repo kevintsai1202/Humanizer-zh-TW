@@ -21,13 +21,57 @@ Humanizer-zh-TW 是一個用於去除文字中 AI 生成痕跡的工具，幫助
 
 ## 安裝
 
-### 方式一：透過 npx 一鍵安裝(Claude Code)
+### 方式一：透過 npx add-skill 安裝（推薦）
+
+使用 [add-skill](https://github.com/vercel-labs/add-skill) 工具可以快速安裝到各種 AI 代理程式。
+
+#### 自動偵測已安裝的代理程式
 
 ```bash
-npx skills add https://github.com/kevintsai1202/Humanizer-zh-TW.git
+npx add-skill kevintsai1202/Humanizer-zh-TW
 ```
 
-這是最簡單的安裝方式，會自動將技能安裝到正確的目錄。
+執行後會自動偵測您已安裝的 AI 代理程式，並讓您選擇要安裝到哪些環境。
+
+#### 安裝到特定代理程式
+
+```bash
+# 安裝到 Claude Code
+npx add-skill kevintsai1202/Humanizer-zh-TW -a claude-code -g -y
+
+# 安裝到 Antigravity
+npx add-skill kevintsai1202/Humanizer-zh-TW -a antigravity -g -y
+
+# 安裝到 Cursor
+npx add-skill kevintsai1202/Humanizer-zh-TW -a cursor -g -y
+
+# 安裝到 Codex
+npx add-skill kevintsai1202/Humanizer-zh-TW -a codex -g -y
+
+# 安裝到 Roo Code
+npx add-skill kevintsai1202/Humanizer-zh-TW -a roo -g -y
+
+# 安裝到 Gemini CLI
+npx add-skill kevintsai1202/Humanizer-zh-TW -a gemini-cli -g -y
+
+# 安裝到 GitHub Copilot
+npx add-skill kevintsai1202/Humanizer-zh-TW -a github-copilot -g -y
+
+# 安裝到 Windsurf
+npx add-skill kevintsai1202/Humanizer-zh-TW -a windsurf -g -y
+```
+
+#### 安裝到多個代理程式
+
+```bash
+# 同時安裝到 Claude Code 和 Antigravity
+npx add-skill kevintsai1202/Humanizer-zh-TW -a claude-code -a antigravity -g -y
+```
+
+**參數說明：**
+- `-a, --agent <agents...>`：指定要安裝的代理程式
+- `-g, --global`：安裝到全域目錄（而非專案目錄）
+- `-y, --yes`：跳過確認提示，直接安裝
 
 ### 方式二：透過 Git 複製
 
