@@ -1,0 +1,44 @@
+[config]
+model = "gpt-5.5-2026-04-23"
+fallback_models = ["gpt-5.4-mini"]
+git_provider = "github"
+response_language = "zh-TW"
+
+[pr_description]
+publish_labels = false
+generate_ai_title = false
+add_original_user_description = true
+extra_instructions = """\
+請使用台灣繁體中文撰寫 PR 說明。
+清楚說明變更目的、影響的檔案，以及是否調整技能規則、範例或使用方法。
+不要補寫 PR 內容未提供的背景、測試結果或相容性聲明。
+"""
+
+[pr_reviewer]
+persistent_comment = true
+num_max_findings = 5
+require_score_review = false
+require_tests_review = false
+require_estimate_effort_to_review = false
+enable_review_labels_effort = false
+enable_review_labels_security = false
+extra_instructions = """\
+請使用台灣繁體中文進行審查，並優先找出會造成錯誤、誤導或行為退化的問題。
+
+審查重點：
+- SKILL.md 的規則是否符合台灣繁體中文用語與中文寫作邏輯。
+- 是否混入中國大陸常用詞、不自然直譯，或只適用於英文的寫作規則。
+- 改寫規則是否可能要求模型虛構來源、數字、引言、經驗或其他事實。
+- README.md、SKILL.md 與 LICENSE 的描述、數量、連結和授權是否一致。
+- Markdown、YAML front matter、TOML 與 GitHub Actions YAML 是否有效。
+
+只回報具體且可採取行動的問題。若沒有明確問題，請直接說明未發現問題。
+"""
+
+[pr_code_suggestions]
+focus_only_on_problems = true
+suggestions_score_threshold = 7
+commitable_code_suggestions = false
+extra_instructions = """\
+建議必須維持台灣繁體中文、保留原意，且不得加入原文未提供的事實。
+"""
