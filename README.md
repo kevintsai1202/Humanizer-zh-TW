@@ -80,6 +80,8 @@ npx skills add kevintsai1202/Humanizer-zh-TW -a claude-code -a antigravity -g -y
 
 中文是這個 skill 的主要說明語言；`zero-width`、`C2PA`、`provenance`、`Claude watermark` 等英文術語會保留，方便不同代理程式觸發與對接服務。
 
+技能內附從上游 `watermarks-remover` 擷取的 Python deterministic scripts，以及 Windows PowerShell 入口；可先對 Markdown／純文字做 inspect，再輸出保留原檔的 `.cleaned` 副本。上游腳本與 MIT 授權副本位於 `text-watermark-cleaner-zh-tw/scripts/`。
+
 從本 repo 手動安裝子技能：
 
 ```powershell
@@ -97,6 +99,15 @@ Copy-Item -Recurse .\text-watermark-cleaner-zh-tw `
 ```text
 /text-watermark-cleaner-zh-tw 請檢查這段繁中是否有不可見文字標記，不要改內容。
 /text-watermark-cleaner-zh-tw 請清理 article.md 的 zero-width 字元，但保留程式碼、URL、引用與全形標點。
+```
+
+本地腳本範例：
+
+```powershell
+& .\text-watermark-cleaner-zh-tw\scripts\run-text-watermark.ps1 `
+  -Mode Inspect -InputPath .\article.md -Json
+& .\text-watermark-cleaner-zh-tw\scripts\run-text-watermark.ps1 `
+  -Mode Clean -InputPath .\article.md -OutputPath .\article.cleaned.md -Stats
 ```
 
 ### 方式二：透過 Git 複製

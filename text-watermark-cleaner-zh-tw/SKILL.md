@@ -45,7 +45,17 @@ description: >-
 
 ### 2. Inspect first
 
-若環境提供 `watermarks-remover` HTTP service，先檢查：
+本技能優先使用內附的本地 deterministic scripts；它們是從 [`guillaumemeyer/watermarks-remover`](https://github.com/guillaumemeyer/watermarks-remover) 的 `service/scripts` 擷取，並保留上游 MIT 授權。Windows PowerShell 執行方式：
+
+```powershell
+$skillRoot = (Resolve-Path .\text-watermark-cleaner-zh-tw).Path
+& "$skillRoot\scripts\run-text-watermark.ps1" `
+  -Mode Inspect -InputPath .\article.md -Json
+```
+
+需要較嚴格的檢查時才加上 `-Aggressive` 或 `-StripEmojiGlue`。若要同時取得統計式報告，可加 `-Stylometry`；這是分析訊號，不是 Claude 官方 detector。
+
+若部署環境提供相容的 `watermarks-remover` HTTP service，也可先檢查：
 
 ```text
 GET  $WATERMARKS_SERVICE_URL/health
@@ -53,18 +63,25 @@ GET  $WATERMARKS_SERVICE_URL/capabilities
 POST $WATERMARKS_SERVICE_URL/inspect
 ```
 
-服務不可達時，不要假裝完成確定性清理。聊天中的文字沒有可保證的 post-send Unicode filter；只能進行受保護的模型內處理，並在報告中標示限制。
+服務不可達時，不要假裝完成服務端清理；可使用本地腳本完成 Layer A，並在報告中分別標示「本地腳本已驗證」與「服務端未驗證」。聊天中的文字沒有可保證的 post-send Unicode filter；只能進行受保護的模型內處理，並在報告中標示限制。
 
 ### 3. 執行 Layer A
 
-使用服務的 `/clean` 或等效 deterministic cleaner，並保留原檔，預設產生 `*.cleaned.*`。採用保守選項：
+使用內附 `scripts/run-text-watermark.ps1 -Mode Clean`、服務的 `/clean` 或等效 deterministic cleaner，並保留原檔，預設產生 `*.cleaned.*`。本地入口範例：
+
+```powershell
+& "$skillRoot\scripts\run-text-watermark.ps1" `
+  -Mode Clean -InputPath .\article.md -OutputPath .\article.cleaned.md -Stats
+```
+
+採用保守選項：
 
 - 不預設套用 NFKC。
 - 不預設把所有特殊空白改成半形空白。
 - 不預設使用 aggressive homoglyph mapping。
 - 不預設刪除合法 RTL/LTR 控制、emoji glue、CJK variation selector 或其他有排版／語意作用的不可見字元。
 
-只有使用者明確接受版面、方向性或多語文字形可能改變時，才啟用 aggressive、space normalization 或 strip-bidi 選項。
+本地 wrapper 預設加入 `--no-normalize-spaces`；只有使用者明確接受版面、方向性或多語文字形可能改變時，才啟用 `-Aggressive`、`-NormalizeSpaces`、`-Nfkc` 或 `-StripBidi`。不要使用 `--force-text` 處理 DOCX、PDF 或其他二進位容器。
 
 ### 4. 執行 Layer B（可選）
 
@@ -106,6 +123,12 @@ POST $WATERMARKS_SERVICE_URL/inspect
 - 清理前後都無差異時，回報 `no actionable text marks found`，不要製造新的檔案變更。
 - 格式未知、檔案過大、service 不可達或 detector 未設定時，清楚回報原因並停止該層，不要靜默 fallback。
 - 任何必要揭露、作者聲明、引用或合規文字都必須保留。
+
+## 本地資源與來源
+
+- `scripts/common.py`、`scripts/text_unicode.py`、`scripts/clean_text.py`、`scripts/inspect_text.py` 與 `scripts/score_stylometry.py` 來自上游 `watermarks-remover` 的 `service/scripts`。
+- `scripts/run-text-watermark.ps1` 是本 repo 的 Windows PowerShell 入口，負責傳入 UTF-8、保守清理選項與 `.cleaned` 輸出路徑。
+- 上游授權副本見 [`scripts/LICENSE-watermarks-remover.txt`](scripts/LICENSE-watermarks-remover.txt)；擷取版本為 commit `4a0fbc312f2e5138c35d270d9db284cc07689930`。
 
 ## 典型請求
 
