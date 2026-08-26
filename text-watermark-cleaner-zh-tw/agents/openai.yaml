@@ -1,0 +1,4 @@
+interface:
+  display_name: "文字浮水印清理（繁中）"
+  short_description: "檢查並清理不可見文字標記、provenance 與統計式 AI 浮水印"
+  default_prompt: "使用 $text-watermark-cleaner-zh-tw 檢查並清理這份繁體中文文字的不可見字元與文字 provenance 標記。"

@@ -18,6 +18,7 @@ Humanizer-zh-TW 是一個用於去除文字中 AI 生成痕跡的工具，幫助
 - 編輯和審閱 AI 生成的內容
 - 提升文章的人性化程度
 - 學習辨識 AI 寫作的常見模式
+- 以獨立 skill 檢查文字型 AI provenance 與不可見 Unicode 標記
 
 ## 安裝
 
@@ -72,6 +73,31 @@ npx skills add kevintsai1202/Humanizer-zh-TW -a claude-code -a antigravity -g -y
 - `-a, --agent <agents...>`：指定要安裝的代理程式
 - `-g, --global`：安裝到全域目錄（而非專案目錄）
 - `-y, --yes`：跳過確認提示，直接安裝
+
+### 附加技能：文字浮水印清理（繁體中文版）
+
+本專案另附一個獨立的 `text-watermark-cleaner-zh-tw` skill。它專門處理不可見 Unicode、zero-width、tag characters、異形空白與文字型 AI provenance；不把自然改寫誤稱為浮水印解碼，也不處理可見圖片浮水印或二進位檔案 metadata。
+
+中文是這個 skill 的主要說明語言；`zero-width`、`C2PA`、`provenance`、`Claude watermark` 等英文術語會保留，方便不同代理程式觸發與對接服務。
+
+從本 repo 手動安裝子技能：
+
+```powershell
+# Claude Code（Windows PowerShell）
+Copy-Item -Recurse .\text-watermark-cleaner-zh-tw `
+  "$env:USERPROFILE\.claude\skills\text-watermark-cleaner-zh-tw"
+
+# Codex（Windows PowerShell）
+Copy-Item -Recurse .\text-watermark-cleaner-zh-tw `
+  "$env:USERPROFILE\.codex\skills\text-watermark-cleaner-zh-tw"
+```
+
+使用範例：
+
+```text
+/text-watermark-cleaner-zh-tw 請檢查這段繁中是否有不可見文字標記，不要改內容。
+/text-watermark-cleaner-zh-tw 請清理 article.md 的 zero-width 字元，但保留程式碼、URL、引用與全形標點。
+```
 
 ### 方式二：透過 Git 複製
 
@@ -167,7 +193,7 @@ git clone https://github.com/kevintsai1202/Humanizer-zh-TW.git ~/.gemini/cli/ski
 
 **輸出範例：**
 
-> 這家咖啡館在台北市中心開了三年，以手沖咖啡和老建築改造的空間聞名。
+> 這家咖啡館位於台北市中心。介紹空間特色即可，不需要再堆疊「風景如畫」或「充滿活力」這類形容詞。
 
 #### 場景 2：改寫學術摘要
 
@@ -180,7 +206,7 @@ git clone https://github.com/kevintsai1202/Humanizer-zh-TW.git ~/.gemini/cli/ski
 
 **輸出範例：**
 
-> 本研究分析了機器學習在醫療診斷中的應用，重點是肺癌早期篩查。研究使用了 2019-2023 年間 5000 例病歷資料。
+> 本研究分析機器學習在醫療診斷中的應用，並整理它對這個領域可能帶來的影響與後續發展。
 
 #### 場景 3：改寫部落格文章
 
@@ -193,7 +219,9 @@ git clone https://github.com/kevintsai1202/Humanizer-zh-TW.git ~/.gemini/cli/ski
 
 **輸出範例：**
 
-> 我一直在想 AI 會怎麼改變我們的工作方式。上週和幾個做產品的朋友聊，有人覺得很興奮，有人擔心失業，大概率真相在中間某個無聊的地方。
+> 人工智慧可能改變我們的工作方式，但它對整個社會的影響，仍需要更多具體證據來判斷。
+
+> 注意：改寫時不應自行加入原文沒有的朋友、經驗、數據或來源。若需要處理文字浮水印，請改用 `text-watermark-cleaner-zh-tw`。
 
 ## 偵測的 AI 寫作模式
 
@@ -239,6 +267,7 @@ git clone https://github.com/kevintsai1202/Humanizer-zh-TW.git ~/.gemini/cli/ski
 
 - **`SKILL.md`** - 繁體中文版技能定義檔案
 - **`README.md`** - 本說明文件
+- **`text-watermark-cleaner-zh-tw/SKILL.md`** - 繁體中文文字浮水印清理 skill
 
 **註：** 英文原版請參考 [blader/humanizer](https://github.com/blader/humanizer)
 
@@ -250,7 +279,8 @@ git clone https://github.com/kevintsai1202/Humanizer-zh-TW.git ~/.gemini/cli/ski
 2. **重寫問題片段** - 用自然的表達替換 AI 痕跡
 3. **保留核心含義** - 確保資訊完整性
 4. **維持適當語調** - 匹配文字應有的風格
-5. **注入真實個性** - 讓文字有「人味」
+5. **提煉原有個性** - 只能使用原文或使用者提供的素材，不新增虛構經歷
+6. **完成後詢問** - 若使用者沒有拒絕，詢問是否要由 `text-watermark-cleaner-zh-tw` 檢查文字浮水印；不自動清理
 
 ### 關鍵原則
 
@@ -261,9 +291,9 @@ git clone https://github.com/kevintsai1202/Humanizer-zh-TW.git ~/.gemini/cli/ski
 - **有觀點** - 不要只報告事實，要對它們做出反應
 - **變化節奏** - 混合使用長短句
 - **承認複雜性** - 真實的人有複雜感受
-- **適當使用「我」** - 第一人稱是誠實的表現
-- **允許一些混亂** - 完美的結構反而顯得機械
-- **對感受要具體** - 用具體細節替代抽象概括
+- **適當使用「我」** - 只保留原文或使用者提供的第一人稱素材
+- **保留真實的混亂** - 不把作者的保留態度磨平，也不自行添加離題內容
+- **對感受要具體** - 使用原文已有的細節，不為了人味虛構背景
 
 #### 範例對比
 
@@ -273,7 +303,7 @@ git clone https://github.com/kevintsai1202/Humanizer-zh-TW.git ~/.gemini/cli/ski
 
 **改寫後（人性化）：**
 
-> 軟體更新加入了批次處理、鍵盤快捷鍵和離線模式。來自測試使用者的早期回饋是積極的，大多數報告任務達成速度更快。
+> 這次更新加入批次處理、鍵盤快捷鍵和離線模式。重點是功能本身，不需要再加上「革命」或「致力於創新」這類宣告。
 
 **變化：**
 
@@ -306,6 +336,10 @@ git clone https://github.com/kevintsai1202/Humanizer-zh-TW.git ~/.gemini/cli/ski
 - 加入了適合中文語境的範例
 - 調整了部分表達以符合中文習慣
 
+### 文字浮水印的分工
+
+`humanizer-zh-tw` 負責文字語氣與結構；`text-watermark-cleaner-zh-tw` 負責不可見文字載體與統計式文字標記的獨立流程。自然改寫只能降低統計相似度，不能證明 Claude 浮水印已移除，也不能證明作者身份。
+
 ## 參考資源
 
 - [Wikipedia: Signs of AI writing](https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing) - 原始指南來源
@@ -313,6 +347,7 @@ git clone https://github.com/kevintsai1202/Humanizer-zh-TW.git ~/.gemini/cli/ski
 - [blader/humanizer](https://github.com/blader/humanizer) - 原始英文版專案
 - [hardikpandya/stop-slop](https://github.com/hardikpandya/stop-slop) - 實用工具部分的靈感來源
 - [op7418/Humanizer-zh](https://github.com/op7418/Humanizer-zh) - 簡體中文版本參考
+- [`text-watermark-cleaner-zh-tw/SKILL.md`](text-watermark-cleaner-zh-tw/SKILL.md) - 繁體中文文字浮水印清理 skill
 
 
 ## 許可
